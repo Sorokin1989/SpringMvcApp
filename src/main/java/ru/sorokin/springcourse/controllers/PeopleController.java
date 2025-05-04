@@ -4,16 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.sorokin.springcourse.dao.PersonDAO;
+import ru.sorokin.springcourse.models.Person;
 
 @Controller
 @RequestMapping("/people")
 public class PeopleController {
 
     private PersonDAO personDAO;
-
+@Autowired
     public PeopleController(PersonDAO personDAO) {
         this.personDAO = personDAO;
     }
@@ -29,6 +31,17 @@ public class PeopleController {
         return  "people/show";
 
     }
+    @GetMapping("/new")
+public String newPerson(Model model) {
+    model.addAttribute("person", new Person());
+    return "people/new";
+}
 
+public String create(@ModelAttribute("person") Person person) {
+    personDAO.save(person);
+    return "redirect:/people";
+
+
+}
 
 }
