@@ -1,8 +1,10 @@
 package ru.sorokin.springcourse.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.sorokin.springcourse.dao.PersonDAO;
 import ru.sorokin.springcourse.models.Person;
@@ -32,8 +34,11 @@ public class PeopleController {
 public String newPerson(@ModelAttribute("person") Person person) {
     return "people/new";
 }
-
-public String create(@ModelAttribute("person") Person person) {
+@PostMapping()
+public String create(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult) {
+    if (bindingResult.hasErrors()) {
+        return "people/new";
+    }
     personDAO.save(person);
     return "redirect:/people";
 
@@ -44,7 +49,11 @@ model.addAttribute("person",personDAO.show(id));
 return "people/edit";
 }
 @PatchMapping("/{id}")
-    public String update(@ModelAttribute("person") Person person, @PathVariable("id") int id) {
+    public String update(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult,
+                         @PathVariable("id") int id) {
+    if (bindingResult.hasErrors()) {
+        return "people/edit";
+    }
     personDAO.update(id,person);
     return "redirect:/people";
 
