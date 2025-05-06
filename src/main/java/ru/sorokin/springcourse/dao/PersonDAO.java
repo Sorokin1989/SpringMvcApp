@@ -44,14 +44,7 @@ jdbcTemplate.update("update Person set name=?, age=?, email=? where id=?", updat
     }
 
     public void delete(int id) {
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = connection.prepareStatement("delete from Person where id=?");
-            preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        jdbcTemplate.update("delete from person where id=?", id);
 
 
     }
