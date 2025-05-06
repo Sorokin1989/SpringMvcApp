@@ -55,11 +55,11 @@ public class PersonDAO {
     public Person show(int id) {
         Person person = null;
         try {
-            PreparedStatement preparedStatement=
+            PreparedStatement preparedStatement =
                     connection.prepareStatement("select * from person WHERE id=?");
 
             preparedStatement.setInt(1, id);
-            ResultSet resultSet=preparedStatement.executeQuery();
+            ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             person = new Person();
             person.setId(resultSet.getInt("id"));
@@ -88,11 +88,20 @@ public class PersonDAO {
     }
 
     public void update(int id, Person updatedPerson) {
-        Person personToBeUpdated = show(id);
 
-        personToBeUpdated.setName(updatedPerson.getName());
-        personToBeUpdated.setAge(updatedPerson.getAge());
-        personToBeUpdated.setEmail(updatedPerson.getEmail());
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("update Person set name=?, age=?," +
+                    "email=? where id=?");
+
+            preparedStatement.setString(1, updatedPerson.getName());
+            preparedStatement.setInt(2, updatedPerson.getAge());
+            preparedStatement.setString(3, updatedPerson.getEmail());
+            preparedStatement.setInt(4, id);
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
