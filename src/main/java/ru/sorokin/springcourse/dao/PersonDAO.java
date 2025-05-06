@@ -53,8 +53,24 @@ public class PersonDAO {
     }
 
     public Person show(int id) {
-        return people.stream().filter(person -> person.getId() == id).findFirst().orElse(null);
-        return null;
+        Person person = null;
+        try {
+            PreparedStatement preparedStatement=
+                    connection.prepareStatement("select * from person WHERE id=?");
+
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet=preparedStatement.executeQuery();
+            resultSet.next();
+            person = new Person();
+            person.setId(resultSet.getInt("id"));
+            person.setName(resultSet.getString("name"));
+            person.setEmail(resultSet.getString("email"));
+            person.setAge(resultSet.getInt("age"));
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return person;
     }
 
     public void save(Person person) {
