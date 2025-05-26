@@ -6,8 +6,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.sorokin.springcourse.models.Person;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 
 @Component
@@ -38,8 +36,8 @@ public class PersonDAO {
     }
 
     public void update(int id, Person updatedPerson) {
-jdbcTemplate.update("update Person set name=?, age=?, email=? where id=?", updatedPerson.getName(),
-        updatedPerson.getAge(), updatedPerson.getEmail(), id);
+        jdbcTemplate.update("update Person set name=?, age=?, email=? where id=?", updatedPerson.getName(),
+                updatedPerson.getAge(), updatedPerson.getEmail(), id);
 
     }
 
