@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.sorokin.springcourse.models.Person;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -44,7 +45,22 @@ public class PersonDAO {
     public void delete(int id) {
         jdbcTemplate.update("delete from person where id=?", id);
 
+//////////////////////////////////////////////////////////////////////////////
+///////////////Тестируем производительность пакетной вставки
+////////////////////////////////////////////////////////////////////////////////
 
+    }
+    public void testMultipleUpdate() {
+        List<Person> people=create1000people();
+
+    }
+
+    private List<Person> create1000people() {
+        List<Person> people=new ArrayList<>();
+        for (int i = 0; i < 1000; i++) {
+            people.add(new Person(i,"Name" + i,30,"test" + i + "mail.ru"));
+
+        } return people;
     }
 
 }
