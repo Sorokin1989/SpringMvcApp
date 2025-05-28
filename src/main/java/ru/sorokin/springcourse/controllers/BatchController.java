@@ -30,7 +30,7 @@ public class BatchController {
 
     }
     @GetMapping("/with")
-    public String withoutBatch() {
+    public String withBatch() {
         personDAO.testBatchUpdate();
         return "redirect:/people";
 
